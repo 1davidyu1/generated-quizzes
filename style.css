@@ -7,20 +7,16 @@ html {
     height: 100%;
 }
 
-body {
+main {
     margin: 0;
     height: 100%;
+    color: #293264;
     background-color: #F5F7FB;
     background-image: url('/images/yellow-blob.png'), url('/images/blue-blob.png');
     background-position: top right, bottom left;
     background-repeat: no-repeat;
     background-size: contain;
     background-size: 40%, 40%;
-}
-
-main {
-    height: 100vh;
-    max-width: 200vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -31,13 +27,7 @@ main {
     text-align: center;
 }
 
-.begin--header {
-    color: #293264;
-}
-
 .begin--description {
-    color: #293264;
-    font-size: 16px;
     font-weight: 100;
 }
 
@@ -47,4 +37,34 @@ main {
     padding: 10px 40px;
     border: none;
     border-radius: 15px;
+    cursor: pointer;
+}
+
+.quiz--answer--container{
+    display: flex;
+}
+
+.quiz--answer {
+    border-color: #4D5B9E;
+    border-radius: 8px;
+    text-align: center;
+    padding: 5px 10px;
+    min-width: 66px;
+}
+
+.quiz--line {
+    border-bottom: 1px solid #DBDEF0;
+    margin-bottom: 20px;
+    width: 400px;
+  }
+  
+.quiz--check--button {
+    display: flex;
+    margin: auto;
+    color: white;
+    background-color: #4D5B9E;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
 }

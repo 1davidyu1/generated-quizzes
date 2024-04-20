@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -264,9 +264,9 @@ process.umask = function() { return 0; };
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(12);
-} else {
   module.exports = __webpack_require__(11);
+} else {
+  module.exports = __webpack_require__(10);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
@@ -376,9 +376,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(16);
-} else {
   module.exports = __webpack_require__(15);
+} else {
+  module.exports = __webpack_require__(14);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
@@ -393,27 +393,68 @@ if (process.env.NODE_ENV === 'production') {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 exports.default = App;
 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Begin = __webpack_require__(6);
-
-var _Begin2 = _interopRequireDefault(_Begin);
-
-var _Quiz = __webpack_require__(7);
+var _Quiz = __webpack_require__(6);
 
 var _Quiz2 = _interopRequireDefault(_Quiz);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
+    var _useState = (0, _react.useState)(false),
+        _useState2 = _slicedToArray(_useState, 2),
+        beginQuiz = _useState2[0],
+        setBeginQuiz = _useState2[1];
+
+    // need to change
+
+
+    var question = "What is?";
+    var answers = "somelarge";
+    var isHeld = false;
+
+    function handleBegin() {
+        setBeginQuiz(true);
+    }
+
+    var mainBackgroundSize = {
+        backgroundSize: beginQuiz ? "20%, 20%" : "40%, 40%"
+    };
+
     return _react2.default.createElement(
         "main",
-        null,
-        _react2.default.createElement(_Begin2.default, null)
+        { style: mainBackgroundSize },
+        beginQuiz ? _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(_Quiz2.default, { question: question, answers: answers, isHeld: isHeld })
+        ) : _react2.default.createElement(
+            "div",
+            { className: "begin--container" },
+            _react2.default.createElement(
+                "h1",
+                { className: "begin--header" },
+                "Quizzical"
+            ),
+            _react2.default.createElement(
+                "h4",
+                { className: "begin--description" },
+                "Test your knowledge"
+            ),
+            _react2.default.createElement(
+                "button",
+                { className: "begin--button", onClick: handleBegin },
+                "Start quiz"
+            )
+        )
     );
 }
 
@@ -456,55 +497,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(10);
-} else {
   module.exports = __webpack_require__(9);
+} else {
+  module.exports = __webpack_require__(8);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = Begin;
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Begin() {
-    return _react2.default.createElement(
-        "div",
-        { className: "begin--container" },
-        _react2.default.createElement(
-            "h1",
-            { className: "begin--header" },
-            "Quizzical"
-        ),
-        _react2.default.createElement(
-            "h4",
-            { className: "begin--description" },
-            "Test your knowledge"
-        ),
-        _react2.default.createElement(
-            "button",
-            { className: "begin--button" },
-            "Start quiz"
-        )
-    );
-}
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -521,16 +522,41 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Quiz() {
+function Quiz(props) {
+
+    var quizAnswerStyle = {
+        border: props.isHeld ? "none" : "solid",
+        backgroundColor: props.isHeld ? "#D6DBF5" : "transparent"
+    };
+
     return _react2.default.createElement(
         "div",
         null,
-        "Quiz"
+        _react2.default.createElement(
+            "h2",
+            null,
+            props.question
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "quiz--answer--container" },
+            _react2.default.createElement(
+                "p",
+                { style: quizAnswerStyle, className: "quiz--answer" },
+                props.answers
+            )
+        ),
+        _react2.default.createElement("div", { className: "quiz--line" }),
+        _react2.default.createElement(
+            "button",
+            { className: "quiz--check--button" },
+            "Check answers"
+        )
     );
 }
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -553,7 +579,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById("root"));
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -575,7 +601,7 @@ if (process.env.NODE_ENV !== "production") {
 var React = __webpack_require__(1);
 var _assign = __webpack_require__(2);
 var Scheduler = __webpack_require__(3);
-var tracing = __webpack_require__(17);
+var tracing = __webpack_require__(16);
 
 var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 
@@ -26823,7 +26849,7 @@ exports.version = ReactVersion;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27127,7 +27153,7 @@ exports.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!rk(c))throw Er
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29468,7 +29494,7 @@ exports.version = ReactVersion;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29498,7 +29524,7 @@ exports.useLayoutEffect=function(a,b){return S().useLayoutEffect(a,b)};exports.u
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29853,7 +29879,7 @@ exports.unstable_wrap = unstable_wrap;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29869,7 +29895,7 @@ var b=0;exports.__interactionsRef=null;exports.__subscriberRef=null;exports.unst
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30523,7 +30549,7 @@ exports.unstable_wrapCallback = unstable_wrapCallback;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30550,16 +30576,16 @@ exports.unstable_wrapCallback=function(a){var b=P;return function(){var c=P;P=b;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(14);
-} else {
   module.exports = __webpack_require__(13);
+} else {
+  module.exports = __webpack_require__(12);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
