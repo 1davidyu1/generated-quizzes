@@ -2,3 +2,32 @@
     box-sizing: border-box;
 }
 
+main {
+    background-color: #F5F7FB;
+    height: 100vh;
+    max-width: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.begin--container {
+    text-align: center;
+}
+
+.begin--header {
+    color: #293264;
+}
+
+.begin--description {
+    color: #293264;
+}
+
+.begin--button {
+    color: white;
+    background-color: #293264;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 15px;
+}
