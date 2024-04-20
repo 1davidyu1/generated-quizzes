@@ -1,11 +1,26 @@
 * {
     box-sizing: border-box;
+    font-family: 'Karla', sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    background-color: #F5F7FB;
+    background-image: url('/images/yellow-blob.png'), url('/images/blue-blob.png');
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-size: 40%, 40%;
 }
 
 main {
-    background-color: #F5F7FB;
     height: 100vh;
-    max-width: 100vh;
+    max-width: 200vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -22,11 +37,13 @@ main {
 
 .begin--description {
     color: #293264;
+    font-size: 16px;
+    font-weight: 100;
 }
 
 .begin--button {
     color: white;
-    background-color: #293264;
+    background-color: #4D5B9E;
     padding: 10px 40px;
     border: none;
     border-radius: 15px;
