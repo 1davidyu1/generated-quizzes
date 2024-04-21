@@ -1,22 +1,21 @@
 import React from "react"
 import he from 'he';
-import { shuffle } from '../utils/shuffle'
 
 export default function Quiz(props) {
-
-    const { question, correct_answer, incorrect_answers } = props.qna;
-    let answers = [correct_answer, ...incorrect_answers];
-    answers = shuffle(answers) 
-
-    const quizAnswerStyle = {
-        border: props.isHeld ? "none" : "solid",
-        backgroundColor: props.isHeld ? "#D6DBF5" : "transparent"
-    }
+    const {question, answers, holdAnswer} = props
 
     const answersMap = answers.map((answer, index) => {
+        console.log(answer)
         return (
-        <p key={index} style={quizAnswerStyle} onClick={props.holdAnswer} className="quiz--answer">
-            {he.decode(answer)}
+        <p 
+            key={answer.id} 
+            style={{
+                border: answer.isHeld ? "none" : "solid",
+                backgroundColor: answer.isHeld ? "#D6DBF5" : "transparent"
+            }} 
+            className="quiz--answer"
+            onClick={() => holdAnswer(answer.id)}>
+            {he.decode(answer.text)}
         </p>
         )
     })

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import Quiz from "./components/Quiz"
 import {nanoid} from "nanoid"
+import { shuffle } from './utils/shuffle'
 
 export default function App() {
     const [beginQuiz, setBeginQuiz] = useState(false)
@@ -15,16 +16,47 @@ export default function App() {
     useEffect(() => {
         fetch("https://opentdb.com/api.php?amount=5")
             .then(res => res.json())
-            .then(data => setQuizzes(data.results))
+            .then(data => createQuizzes(data.results))
     },[])
 
-    // function createQuizzes(prevQuizzes) {
-    //     const newQuizzes = prevQuizzes.map(quiz => ({
-    //         ...quiz,
-    //         isHeld: false
-    //     }));
-    //     setQuizzes(newQuizzes);
-    // }
+    console.log(quizzes)
+
+    function createQuizzes(rawQuizzes) {
+        const cleanedQuizzes = rawQuizzes.map(rawQuiz => {
+            let answers = rawQuiz.incorrect_answers.map(incorrectAnswer => ({
+                id: nanoid(), 
+                text: incorrectAnswer,
+                isHeld: false,
+                isCorrect: false // Indicate that this is not the correct answer
+
+            }));
+    
+            answers.push({
+                id: nanoid(),
+                text: rawQuiz.correct_answer,
+                isHeld: false,
+                isCorrect: true // Indicate that this is the correct answer
+            });
+    
+            answers = shuffle(answers);
+    
+            return {
+                question: rawQuiz.question,
+                answers: answers
+            };
+        });
+        setQuizzes(cleanedQuizzes);
+    }
+    
+    
+    function holdAnswer(answerId) {
+        setQuizzes(prevQuizzes => prevQuizzes.map(quiz => ({
+            ...quiz,
+            answers: quiz.answers.map(answer => 
+                answer.id === answerId ? { ...answer, isHeld: !answer.isHeld } : answer
+            )
+        })));
+    }
     
 
     function handleBegin() {
@@ -34,9 +66,9 @@ export default function App() {
     const quizzesMap = quizzes.map((quiz, index) => (
         <Quiz 
             key={index}
-            qna={quiz}
-            isHeld={isHeld}
-            // holdAnswer={() => holdAnswer(index)}
+            question={quiz.question}
+            answers={quiz.answers}
+            holdAnswer={holdAnswer}
         />
     ))
 
