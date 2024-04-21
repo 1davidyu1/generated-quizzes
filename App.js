@@ -3,18 +3,15 @@ import Quiz from "./components/Quiz"
 
 export default function App() {
     const [beginQuiz, setBeginQuiz] = useState(false)
-    const [questions, setQuestions] = useState([])
-
-    console.log(questions)
+    const [quizzes, setQuizzes] = useState([])
 
     // need to change
-    const question = "What is?"
-    const answers = "somelarge"
     const isHeld = false
     
 
     const mainBackgroundSize = {
-        backgroundSize: beginQuiz ? "20%, 20%" : "40%, 40%"
+        backgroundSize: beginQuiz ? "20%, 20%" : "40%, 40%",
+        height: beginQuiz ? "auto" : "100%"
     }
     
     function handleBegin() {
@@ -24,14 +21,24 @@ export default function App() {
     useEffect(() => {
         fetch("https://opentdb.com/api.php?amount=10")
             .then(res => res.json())
-            .then(data => setQuestions(data.results))
+            .then(data => setQuizzes(data.results))
     },[])
+
+    const quizzesMap = quizzes.map(quiz => (
+        <Quiz 
+            question={quiz.question} 
+            answers={quiz.correct_answer} 
+            isHeld={isHeld}
+        />
+    ))
 
     return (
         <main style={mainBackgroundSize}>
             {beginQuiz ? (
             <div>
-                <Quiz question={question} answers={answers} isHeld={isHeld}/>
+                {quizzesMap}
+                {/* make this a if for clicked */}
+                <button className="quiz--check--button">Check answers</button> 
             </div>
             ) : (
             <div className="begin--container">

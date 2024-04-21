@@ -3,13 +3,9 @@
     font-family: 'Karla', sans-serif;
 }
 
-html {
-    height: 100%;
-}
-
 main {
     margin: 0;
-    height: 100%;
+    height: auto;
     color: #293264;
     background-color: #F5F7FB;
     background-image: url('/images/yellow-blob.png'), url('/images/blue-blob.png');

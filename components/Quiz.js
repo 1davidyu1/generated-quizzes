@@ -1,4 +1,5 @@
 import React from "react"
+import he from 'he';
 
 export default function Quiz(props) {
 
@@ -9,13 +10,11 @@ export default function Quiz(props) {
 
     return (
         <div>
-            <h2>{props.question}</h2>
+            <h2>{he.decode(props.question)}</h2>
             <div className="quiz--answer--container">
-                <p style={quizAnswerStyle} className="quiz--answer">{props.answers}</p>
+                <p style={quizAnswerStyle} className="quiz--answer">{he.decode(props.answers)}</p>
             </div>
             <div className="quiz--line"></div>
-            {/* make this a if for clicked */}
-            <button className="quiz--check--button">Check answers</button> 
         </div>
     )
 }
