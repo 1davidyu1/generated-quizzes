@@ -24,10 +24,10 @@ export default function App() {
             .then(data => setQuizzes(data.results))
     },[])
 
-    const quizzesMap = quizzes.map(quiz => (
+    const quizzesMap = quizzes.map((quiz, index) => (
         <Quiz 
-            question={quiz.question} 
-            answers={quiz.correct_answer} 
+            key={index}
+            qna={quiz} 
             isHeld={isHeld}
         />
     ))
@@ -42,7 +42,7 @@ export default function App() {
             </div>
             ) : (
             <div className="begin--container">
-                <h1 className="begin--header">Quizzical</h1>
+                <h1 className="begin--header">QNA</h1>
                 <h4 className="begin--description">Test your knowledge</h4>
                 <button className="begin--button" onClick={handleBegin}>Start quiz</button>
             </div>

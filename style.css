@@ -36,8 +36,18 @@ main {
     cursor: pointer;
 }
 
-.quiz--answer--container{
+.quiz--container{
+    width: 80%;
+    margin: auto;
+}
+
+.quiz--question {
+    font-size: 16px;
+}
+
+.quiz--answer--container {
     display: flex;
+    gap: 12px;
 }
 
 .quiz--answer {
@@ -46,12 +56,15 @@ main {
     text-align: center;
     padding: 5px 10px;
     min-width: 66px;
+    font-size: 12px;
+    cursor: pointer;
 }
 
 .quiz--line {
     border-bottom: 1px solid #DBDEF0;
+    margin-top: 10px;
     margin-bottom: 20px;
-    width: 400px;
+    width: auto;
   }
   
 .quiz--check--button {
