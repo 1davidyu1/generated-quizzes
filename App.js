@@ -1,34 +1,42 @@
 import React, {useState, useEffect} from "react"
 import Quiz from "./components/Quiz"
+import {nanoid} from "nanoid"
 
 export default function App() {
     const [beginQuiz, setBeginQuiz] = useState(false)
     const [quizzes, setQuizzes] = useState([])
-
-    // need to change
     const isHeld = false
-    
 
     const mainBackgroundSize = {
         backgroundSize: beginQuiz ? "20%, 20%" : "40%, 40%",
         height: beginQuiz ? "auto" : "100%"
     }
-    
-    function handleBegin() {
-        setBeginQuiz(true)
-    }
 
     useEffect(() => {
-        fetch("https://opentdb.com/api.php?amount=10")
+        fetch("https://opentdb.com/api.php?amount=5")
             .then(res => res.json())
             .then(data => setQuizzes(data.results))
     },[])
 
+    // function createQuizzes(prevQuizzes) {
+    //     const newQuizzes = prevQuizzes.map(quiz => ({
+    //         ...quiz,
+    //         isHeld: false
+    //     }));
+    //     setQuizzes(newQuizzes);
+    // }
+    
+
+    function handleBegin() {
+        setBeginQuiz(true)
+    }
+
     const quizzesMap = quizzes.map((quiz, index) => (
         <Quiz 
             key={index}
-            qna={quiz} 
+            qna={quiz}
             isHeld={isHeld}
+            // holdAnswer={() => holdAnswer(index)}
         />
     ))
 
