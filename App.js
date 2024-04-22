@@ -42,7 +42,8 @@ export default function App() {
     
             return {
                 question: rawQuiz.question,
-                answers: answers
+                answers: answers,
+                selectedAnswer: false
             };
         });
         setQuizzes(cleanedQuizzes);
@@ -50,13 +51,26 @@ export default function App() {
     
     
     function holdAnswer(answerId) {
-        setQuizzes(prevQuizzes => prevQuizzes.map(quiz => ({
-            ...quiz,
-            answers: quiz.answers.map(answer => 
-                answer.id === answerId ? { ...answer, isHeld: !answer.isHeld } : answer
-            )
-        })));
+        console.log(answerId);
+        setQuizzes(prevQuizzes => prevQuizzes.map(quiz => {
+            // Map over answers to update them based on the clicked answer ID
+            const answers = quiz.answers.map(answer => ({
+                id: answer.id,
+                text: answer.text,
+                isCorrect: answer.isCorrect,
+                isHeld: answer.id === answerId ? !answer.isHeld : answer.isHeld
+            }));
+    
+            const selectedAnswer = answers.some(answer => answer.isHeld);
+    
+            return {
+                question: quiz.question,
+                answers: answers,
+                selectedAnswer: selectedAnswer
+            };
+        }));
     }
+    
     
 
     function handleBegin() {
@@ -69,6 +83,7 @@ export default function App() {
             question={quiz.question}
             answers={quiz.answers}
             holdAnswer={holdAnswer}
+            selectedAnswer={quiz.selectedAnswer}
         />
     ))
 
@@ -77,7 +92,6 @@ export default function App() {
             {beginQuiz ? (
             <div>
                 {quizzesMap}
-                {/* make this a if for clicked */}
                 <button className="quiz--check--button">Check answers</button> 
             </div>
             ) : (

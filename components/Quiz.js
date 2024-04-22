@@ -2,21 +2,21 @@ import React from "react"
 import he from 'he';
 
 export default function Quiz(props) {
-    const {question, answers, holdAnswer} = props
+    const {question, answers, holdAnswer, selectedAnswer} = props
 
-    const answersMap = answers.map((answer, index) => {
-        console.log(answer)
+    const answersMap = answers.map((answer) => {
         return (
-        <p 
+        <button 
             key={answer.id} 
             style={{
                 border: answer.isHeld ? "none" : "solid",
-                backgroundColor: answer.isHeld ? "#D6DBF5" : "transparent"
+                backgroundColor: answer.isHeld ? "#D6DBF5" : "transparent",
+                cursor: selectedAnswer ? "default" : "pointer"
             }} 
             className="quiz--answer"
-            onClick={() => holdAnswer(answer.id)}>
+            onClick={() => { if (!selectedAnswer) holdAnswer(answer.id) }}>
             {he.decode(answer.text)}
-        </p>
+        </button>
         )
     })
 
