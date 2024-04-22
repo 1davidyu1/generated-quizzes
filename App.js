@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react"
 import Quiz from "./components/Quiz"
+import ScoredQuiz from "./components/scoredQuiz"
 import {nanoid} from "nanoid"
 import { shuffle } from './utils/shuffle'
 
 export default function App() {
     const [beginQuiz, setBeginQuiz] = useState(false)
+    const [endQuiz, setEndQuiz] = useState(false)
     const [quizzes, setQuizzes] = useState([])
 
     const mainBackgroundSize = {
@@ -17,8 +19,6 @@ export default function App() {
             .then(res => res.json())
             .then(data => createQuizzes(data.results))
     },[])
-
-    console.log(quizzes)
 
     function createQuizzes(rawQuizzes) {
         const cleanedQuizzes = rawQuizzes.map(rawQuiz => {
@@ -47,36 +47,13 @@ export default function App() {
         });
         setQuizzes(cleanedQuizzes);
     }
-    
-    
-    // function holdAnswer(answerId) {
-    //     console.log(answerId);
-    //     setQuizzes(prevQuizzes => prevQuizzes.map(quiz => {
-    //         const answers = quiz.answers.map(answer => ({
-    //             id: answer.id,
-    //             text: answer.text,
-    //             isCorrect: answer.isCorrect,
-    //             isHeld: answer.id === answerId ? !answer.isHeld : answer.isHeld
-    //         }));
-    
-    //         const selectedAnswer = answers.some(answer => answer.isHeld);
-    
-    //         return {
-    //             question: quiz.question,
-    //             answers: answers,
-    //             selectedAnswer: selectedAnswer
-    //         };
-    //     }));
-    // }
 
     function holdAnswer(answerId) {
-        console.log(answerId);
         setQuizzes(prevQuizzes => prevQuizzes.map(quiz => {
             let newSelectedAnswer = quiz.selectedAnswer
             const answers = quiz.answers.map(answer => {
                 if (answer.id === answerId) {
-                    const isNowHeld = !answer.isHeld;  // Toggle current state
-                    // If this answer is now held, update selectedAnswer to this ID, otherwise clear if it was the selected one
+                    const isNowHeld = !answer.isHeld;
                     newSelectedAnswer = isNowHeld ? answer.id : (quiz.selectedAnswer === answer.id ? "" : quiz.selectedAnswer);
                     return {
                         id: answer.id,
@@ -85,13 +62,13 @@ export default function App() {
                         isHeld: isNowHeld 
                     };
                 }
-                return answer;  // Keep other answers as they are
+                return answer; 
             });
     
             return {
                 question: quiz.question,
                 answers: answers,
-                selectedAnswer: newSelectedAnswer  // Assign the potentially updated selectedAnswer
+                selectedAnswer: newSelectedAnswer
             };
         }));
     }
@@ -100,6 +77,10 @@ export default function App() {
 
     function handleBegin() {
         setBeginQuiz(true)
+    }
+
+    function handleEnd() {
+        setEndQuiz(true)
     }
 
     const quizzesMap = quizzes.map((quiz, index) => (
@@ -114,18 +95,28 @@ export default function App() {
 
     return (
         <main style={mainBackgroundSize}>
-            {beginQuiz ? (
-            <div>
-                {quizzesMap}
-                <button className="quiz--check--button">Check answers</button> 
-            </div>
-            ) : (
+
+            {(!beginQuiz && !endQuiz ) &&
             <div className="begin--container">
                 <h1 className="begin--header">QNA</h1>
                 <h4 className="begin--description">Test your knowledge</h4>
                 <button className="begin--button" onClick={handleBegin}>Start quiz</button>
             </div>
-            )}
+            }
+
+            {(beginQuiz && !endQuiz) && 
+            <div>
+                {quizzesMap}
+                <button className="quiz--check--button" onClick={handleEnd}>Check answers</button> 
+            </div>
+            }
+
+            {endQuiz &&
+            <div>
+                <ScoredQuiz />
+            </div>
+            }
+            
         </main>
     )
 }
