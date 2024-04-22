@@ -79,3 +79,26 @@ main {
     font-size: 12px;
     font-weight: 600;
 }
+
+.quiz--again--button {
+    display: flex;
+    color: white;
+    background-color: #4D5B9E;
+    padding: 14px 22px; 
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.quiz--correct--container {
+    font-size: 10px;
+    margin: auto;
+    display: flex;
+    flex-direction: row; /* Ensures vertical alignment of child elements if needed */
+    align-items: center; /* Centers child elements horizontally within the container */
+    justify-content: center;
+    width: 80%;
+    gap: 14px;
+}

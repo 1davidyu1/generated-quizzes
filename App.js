@@ -8,6 +8,7 @@ export default function App() {
     const [beginQuiz, setBeginQuiz] = useState(false)
     const [endQuiz, setEndQuiz] = useState(false)
     const [quizzes, setQuizzes] = useState([])
+    const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
     const mainBackgroundSize = {
         backgroundSize: beginQuiz ? "20%, 20%" : "40%, 40%",
@@ -20,13 +21,25 @@ export default function App() {
             .then(data => createQuizzes(data.results))
     },[])
 
+    useEffect(() => {
+        const correctAnswers = quizzes.reduce((acc, quiz) => {
+            // Assuming each quiz has an 'answers' array
+            return acc + quiz.answers.reduce((answerAcc, answer) => {
+                return answerAcc + (answer.isHeld && answer.isCorrect ? 1 : 0);
+            }, 0);
+        }, 0);
+    
+        setCorrectAnswersCount(correctAnswers);
+    }, [quizzes]);
+    
+
     function createQuizzes(rawQuizzes) {
         const cleanedQuizzes = rawQuizzes.map(rawQuiz => {
             let answers = rawQuiz.incorrect_answers.map(incorrectAnswer => ({
                 id: nanoid(), 
                 text: incorrectAnswer,
                 isHeld: false,
-                isCorrect: false // Indicate that this is not the correct answer
+                isCorrect: false
 
             }));
     
@@ -34,7 +47,7 @@ export default function App() {
                 id: nanoid(),
                 text: rawQuiz.correct_answer,
                 isHeld: false,
-                isCorrect: true // Indicate that this is the correct answer
+                isCorrect: true 
             });
     
             answers = shuffle(answers);
@@ -72,8 +85,6 @@ export default function App() {
             };
         }));
     }
-    
-    
 
     function handleBegin() {
         setBeginQuiz(true)
@@ -82,6 +93,11 @@ export default function App() {
     function handleEnd() {
         setBeginQuiz(false)
         setEndQuiz(true)
+    }
+
+    function handleReset() {
+        setBeginQuiz(false)
+        setEndQuiz(false)
     }
 
     const quizzesMap = quizzes.map((quiz, index) => (
@@ -93,6 +109,17 @@ export default function App() {
             selectedAnswer={quiz.selectedAnswer}
         />
     ))
+
+    const scoredQuizzesMap = quizzes.map((quiz, index) => (
+        <ScoredQuiz 
+            key={index}
+            question={quiz.question}
+            answers={quiz.answers}
+            selectedAnswer={quiz.selectedAnswer}
+        />
+    ))
+
+    console.log(correctAnswersCount)
 
     return (
         <main style={mainBackgroundSize}>
@@ -114,7 +141,11 @@ export default function App() {
 
             {(!beginQuiz && endQuiz ) &&
             <div>
-                <ScoredQuiz />
+                {scoredQuizzesMap}
+                <div className="quiz--correct--container">
+                    <h2>You scored {correctAnswersCount}/5 correct answers</h2>
+                    <button className="quiz--again--button" onClick={handleReset}>Play again</button> 
+                </div>
             </div>
             }
             
