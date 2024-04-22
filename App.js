@@ -98,6 +98,11 @@ export default function App() {
     function handleReset() {
         setBeginQuiz(false)
         setEndQuiz(false)
+        setQuizzes([]);
+
+        fetch("https://opentdb.com/api.php?amount=5")
+            .then(res => res.json())
+            .then(data => createQuizzes(data.results));
     }
 
     const quizzesMap = quizzes.map((quiz, index) => (
@@ -118,8 +123,6 @@ export default function App() {
             selectedAnswer={quiz.selectedAnswer}
         />
     ))
-
-    console.log(correctAnswersCount)
 
     return (
         <main style={mainBackgroundSize}>
