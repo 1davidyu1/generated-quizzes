@@ -80,6 +80,7 @@ export default function App() {
     }
 
     function handleEnd() {
+        setBeginQuiz(false)
         setEndQuiz(true)
     }
 
@@ -111,7 +112,7 @@ export default function App() {
             </div>
             }
 
-            {endQuiz &&
+            {(!beginQuiz && endQuiz ) &&
             <div>
                 <ScoredQuiz />
             </div>
