@@ -6,7 +6,6 @@ import { shuffle } from './utils/shuffle'
 export default function App() {
     const [beginQuiz, setBeginQuiz] = useState(false)
     const [quizzes, setQuizzes] = useState([])
-    const isHeld = false
 
     const mainBackgroundSize = {
         backgroundSize: beginQuiz ? "20%, 20%" : "40%, 40%",
@@ -43,30 +42,56 @@ export default function App() {
             return {
                 question: rawQuiz.question,
                 answers: answers,
-                selectedAnswer: false
+                selectedAnswer: ""
             };
         });
         setQuizzes(cleanedQuizzes);
     }
     
     
+    // function holdAnswer(answerId) {
+    //     console.log(answerId);
+    //     setQuizzes(prevQuizzes => prevQuizzes.map(quiz => {
+    //         const answers = quiz.answers.map(answer => ({
+    //             id: answer.id,
+    //             text: answer.text,
+    //             isCorrect: answer.isCorrect,
+    //             isHeld: answer.id === answerId ? !answer.isHeld : answer.isHeld
+    //         }));
+    
+    //         const selectedAnswer = answers.some(answer => answer.isHeld);
+    
+    //         return {
+    //             question: quiz.question,
+    //             answers: answers,
+    //             selectedAnswer: selectedAnswer
+    //         };
+    //     }));
+    // }
+
     function holdAnswer(answerId) {
         console.log(answerId);
         setQuizzes(prevQuizzes => prevQuizzes.map(quiz => {
-            // Map over answers to update them based on the clicked answer ID
-            const answers = quiz.answers.map(answer => ({
-                id: answer.id,
-                text: answer.text,
-                isCorrect: answer.isCorrect,
-                isHeld: answer.id === answerId ? !answer.isHeld : answer.isHeld
-            }));
-    
-            const selectedAnswer = answers.some(answer => answer.isHeld);
+            let newSelectedAnswer = quiz.selectedAnswer
+            const answers = quiz.answers.map(answer => {
+                if (answer.id === answerId) {
+                    const isNowHeld = !answer.isHeld;  // Toggle current state
+                    // If this answer is now held, update selectedAnswer to this ID, otherwise clear if it was the selected one
+                    newSelectedAnswer = isNowHeld ? answer.id : (quiz.selectedAnswer === answer.id ? "" : quiz.selectedAnswer);
+                    return {
+                        id: answer.id,
+                        text: answer.text,
+                        isCorrect: answer.isCorrect,
+                        isHeld: isNowHeld 
+                    };
+                }
+                return answer;  // Keep other answers as they are
+            });
     
             return {
                 question: quiz.question,
                 answers: answers,
-                selectedAnswer: selectedAnswer
+                selectedAnswer: newSelectedAnswer  // Assign the potentially updated selectedAnswer
             };
         }));
     }

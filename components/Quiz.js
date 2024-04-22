@@ -14,7 +14,8 @@ export default function Quiz(props) {
                 cursor: selectedAnswer ? "default" : "pointer"
             }} 
             className="quiz--answer"
-            onClick={() => { if (!selectedAnswer) holdAnswer(answer.id) }}>
+            onClick={() => { if (!selectedAnswer || selectedAnswer === answer.id) holdAnswer(answer.id) }}
+            >
             {he.decode(answer.text)}
         </button>
         )
